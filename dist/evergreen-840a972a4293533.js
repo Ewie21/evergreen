@@ -283,8 +283,8 @@ function getImports() {
         const ret = getObject(arg0).createTextNode(getStringFromWasm0(arg1, arg2));
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_item_2ab86c1e3cb70ed3 = function(arg0, arg1) {
-        const ret = getObject(arg0).item(arg1 >>> 0);
+    imports.wbg.__wbg_getwithindex_aec05ea9d2417c75 = function(arg0, arg1) {
+        const ret = getObject(arg0)[arg1 >>> 0];
         return isLikeNone(ret) ? 0 : addHeapObject(ret);
     };
     imports.wbg.__wbg_tagName_92d4c105959ede9f = function(arg0, arg1) {
@@ -415,7 +415,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('evergreen-4db8b937925368a9_bg.wasm', import.meta.url);
+        input = new URL('evergreen-840a972a4293533_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 

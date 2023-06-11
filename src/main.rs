@@ -1,7 +1,7 @@
 use std::ops::Deref;
 use crate::utils::console::*;
 use wasm_bindgen::{self, JsValue, JsCast, JsError};
-use web_sys::{self, Element, Window, window, Document, Event, Text, HtmlElement, Node};
+use web_sys::{self, Element, Window, window, console, Document, Event, Text, HtmlElement, Node};
 use leptos_reactive::{self, create_signal, create_runtime, create_scope, create_effect, SignalUpdate, Scope, SignalGet, WriteSignal, ReadSignal};
 
 pub mod utils;
@@ -173,15 +173,19 @@ impl El {
                 let value: String = f().0.outer_html(); 
                 log(value); // This value is being properly changed
                 let node_data: &Node = &(Node::from(f().0));
-
-                let old_node: &Node = &Node::from(el.get_child_index(1).0); // I assume the issue is here  
-                let res = el.0.replace_child(old_node, node_data); // el is not being updated
+                log("test0.1");
+                let old_node: &Node = &Node::from(el.get_child_index(0).0);
+                // The issue is that it's looking at the address not the value 
+                log(Element::from(*old_node).outer_html());
+                let res = el.0.replace_child(old_node, node_data); // el is not being updated 
                 match res {
-                    Err(jserr) => {},
+                    Err(jserr) => {
+                        console::log_1(&jserr);
+                    },
                     Ok(node) => {
                         log(node.node_value().unwrap().as_str());
-                    }, // Ok is always returned
-                }
+                    }, 
+                } // Err is returned
                 log(format!("el: {}", el.0.outer_html().as_str()).as_str());
             }
         );
@@ -189,14 +193,16 @@ impl El {
         self
     }
     
-    // Panics
+    /// Panics
     pub fn get_child_index(&self, index: u32) -> El {
         assert!(self.0.child_element_count() >= index);
-        
-        log((*self).0.children().item(index).unwrap().outer_html().as_str());
-        El::wrap((*self).0.children().item(index).unwrap())
+        let children = (*self).0.children();
+        let child: Element = children.get_with_index(index).unwrap();
+        log(child.outer_html());
+        El::wrap(child)
     }
-
+    
+    /// Panics
     pub fn get_child_name(&self, name: &str) -> El {
         El::wrap((*self).0.children().named_item(name).unwrap())
     }
