@@ -415,7 +415,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('evergreen-840a972a4293533_bg.wasm', import.meta.url);
+        input = new URL('evergreen-c93516161bddf90e_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
