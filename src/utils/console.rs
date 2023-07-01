@@ -6,4 +6,3 @@ pub fn log<T: ToString>(value: T) {
     let js_value: &JsValue = &JsValue::from_str(value.to_string().as_str());
     console::log_1(js_value);
 }
-
