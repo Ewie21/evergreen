@@ -1,11 +1,11 @@
 use std::ops::Deref;
 use crate::{
-    base::sig::Sig,
     utils::console::*
 };
 use wasm_bindgen::{self, JsCast};
-use web_sys::{self, Element, Window, window, console, Document, Event, Text, HtmlElement, Node};
-use leptos_reactive::{self, create_signal, create_runtime, create_scope, create_effect, SignalUpdate, Scope, SignalGet, WriteSignal};
+use web_sys::{self, Element, Window, window, console, Document, Event, Text, Node};
+use leptos_reactive::{self, create_effect, Scope};
+use sycamore::prelude::*;
 
 #[derive(Debug, Clone)]
 pub struct El(Element);
@@ -21,7 +21,7 @@ impl Deref for El {
 impl El {
     pub fn new(tag_name: &str) -> Self {
         let window: Window = window().unwrap();
-        let document = window.document().unwrap();
+        let document: Document = window.document().unwrap();
         let el: Element = document.create_element(tag_name).unwrap();
 
         Self(el)
@@ -126,14 +126,14 @@ impl El {
         El::wrap(&self.0.children().named_item(name).unwrap())
     }
 
-    fn div(id: &str, class: &str) -> El {
+    pub fn div(id: &str, class: &str) -> El {
         El::new("div")
             .attr("id", id)
             .attr("class", class)
 
-}
+    }
 
-    fn button(label: &str, cb: impl FnMut(Event) + 'static) -> El{
+    pub fn button(label: &str, cb: impl FnMut(Event) + 'static) -> El{
         El::new("button")
             .on("click", cb)
             .text(label)
